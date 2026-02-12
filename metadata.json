@@ -1,0 +1,8 @@
+{
+  "name": "Qena Water Technical School Platform",
+  "description": "An integrated educational platform for the Secondary Technical School for Drinking Water and Sanitation in Qena, Egypt. Features LMS, student management, and technical curriculum support.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
