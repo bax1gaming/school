@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Layout } from '../components/Layout';
 import { UserRole, User } from '../types';
@@ -18,12 +17,17 @@ export const AdminDashboard: React.FC<DashboardProps> = ({ user, onLogout }) => 
     setIsChecking(true);
     setHealthStatus('IDLE');
     try {
+      // Create a fresh GoogleGenAI instance right before making an API call
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       // Simple ping to check connection
+      // Fix: When setting maxOutputTokens, you must also set thinkingConfig.thinkingBudget
       await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: 'ping',
-        config: { maxOutputTokens: 1 }
+        config: { 
+          maxOutputTokens: 2,
+          thinkingConfig: { thinkingBudget: 0 }
+        }
       });
       setHealthStatus('OK');
     } catch (e) {

@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI } from "@google/genai";
 
@@ -25,12 +24,8 @@ export const AITutor: React.FC = () => {
     setError(null);
 
     try {
-      const apiKey = process.env.API_KEY;
-      if (!apiKey) {
-        throw new Error("API Key is missing. Please check system environment.");
-      }
-
-      const ai = new GoogleGenAI({ apiKey });
+      // Use process.env.API_KEY directly as per senior engineer guidelines
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       
       const response = await ai.models.generateContent({
         model: 'gemini-3-pro-preview',
@@ -40,11 +35,13 @@ export const AITutor: React.FC = () => {
         }
       });
       
-      if (!response || !response.text) {
+      // Accessing the .text property directly as per Gemini API guidelines (not a method call)
+      const responseText = response.text;
+      if (!responseText) {
         throw new Error("Empty response from AI service.");
       }
 
-      setMessages(prev => [...prev, { role: 'bot', text: response.text }]);
+      setMessages(prev => [...prev, { role: 'bot', text: responseText }]);
     } catch (err: any) {
       console.error("AI Error:", err);
       const errorMsg = err.message?.includes('refused to connect') 
